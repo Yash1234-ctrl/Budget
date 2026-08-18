@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Budget Manager
+    </title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+
+    <header class="header">
+
+        <div>
+
+            <h1>
+                💰 Budget Manager
+            </h1>
+
+            <p>
+                Simple daily expense tracker
+            </p>
+
+        </div>
+
+    </header>
+
+
+    <main class="container">
+
+
+        <!-- WALLET -->
+
+        <section class="wallet-card">
+
+            <div class="wallet-info">
+
+                <span class="label">
+                    Available Balance
+                </span>
+
+                <h2 id="walletBalance">
+                    ₹0
+                </h2>
+
+            </div>
+
+
+            <div class="wallet-actions">
+
+                <input type="number" id="addMoneyAmount" placeholder="Amount" min="1">
+
+                <button id="addMoneyBtn" class="primary-btn">
+                    + Add Money
+                </button>
+
+                <button id="resetWalletBtn" class="danger-btn">
+                    Reset
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- SUMMARY -->
+
+        <section class="summary-grid">
+
+
+            <div class="summary-card">
+
+                <span>
+                    Today's Spending
+                </span>
+
+                <strong id="todayTotal">
+                    ₹0
+                </strong>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <span>
+                    Monthly Spending
+                </span>
+
+                <strong id="monthlyTotal">
+                    ₹0
+                </strong>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <span>
+                    Today's Entries
+                </span>
+
+                <strong id="todayCount">
+                    0
+                </strong>
+
+            </div>
+
+
+        </section>
+
+
+        <!-- ADD EXPENSE -->
+
+        <section class="card">
+
+            <div class="section-title">
+
+                <div>
+
+                    <h2>
+                        Add Today's Expense
+                    </h2>
+
+                    <p>
+                        Select a category
+                        and enter the amount
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="category-grid">
+
+
+                <button class="category-btn" data-category="Tea">
+                    ☕
+                    <span>
+                        Tea
+                    </span>
+                </button>
+
+
+                <button class="category-btn" data-category="Breakfast">
+                    🍳
+                    <span>
+                        Breakfast
+                    </span>
+                </button>
+
+
+                <button class="category-btn" data-category="Lunch">
+                    🍛
+                    <span>
+                        Lunch
+                    </span>
+                </button>
+
+
+                <button class="category-btn" data-category="Dinner">
+                    🍽️
+                    <span>
+                        Dinner
+                    </span>
+                </button>
+
+
+                <button class="category-btn" data-category="Snacks">
+                    🍿
+                    <span>
+                        Snacks
+                    </span>
+                </button>
+
+
+                <button class="category-btn" data-category="Travel">
+                    🚗
+                    <span>
+                        Travel
+                    </span>
+                </button>
+
+
+                <button class="category-btn" data-category="Shopping">
+                    🛍️
+                    <span>
+                        Shopping
+                    </span>
+                </button>
+
+
+                <button class="category-btn" data-category="Other">
+                    📦
+                    <span>
+                        Other
+                    </span>
+                </button>
+
+
+            </div>
+
+
+            <div class="expense-form">
+
+
+                <div class="input-group">
+
+                    <label>
+                        Selected Category
+                    </label>
+
+                    <input type="text" id="selectedCategory" placeholder="Select category" readonly>
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label>
+                        Amount
+                    </label>
+
+                    <input type="number" id="expenseAmount" placeholder="₹ 15" min="1">
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label>
+                        Note
+                    </label>
+
+                    <input type="text" id="expenseNote" placeholder="Optional note">
+
+                </div>
+
+
+                <button id="addExpenseBtn" class="primary-btn full-btn">
+                    Add Expense
+                </button>
+
+
+            </div>
+
+        </section>
+
+
+        <!-- TODAY -->
+
+        <section class="card">
+
+            <div class="section-title">
+
+                <div>
+
+                    <h2>
+                        Today's Expenses
+                    </h2>
+
+                    <p>
+                        Your spending today
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div id="todayExpenses">
+
+                <div class="empty-state">
+                    No expenses today.
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- MONTHLY ANALYSIS -->
+
+        <section class="card">
+
+            <div class="section-title">
+
+                <div>
+
+                    <h2>
+                        📊 Monthly Analysis
+                    </h2>
+
+                    <p>
+                        Category-wise spending
+                    </p>
+
+                </div>
+
+
+                <div class="month-selector">
+
+                    <button id="previousMonth">
+                        ←
+                    </button>
+
+                    <span id="currentMonth">
+                        Month
+                    </span>
+
+                    <button id="nextMonth">
+                        →
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div class="monthly-total-box">
+
+                <span>
+                    Total This Month
+                </span>
+
+                <strong id="analysisTotal">
+                    ₹0
+                </strong>
+
+            </div>
+
+
+            <div id="categoryAnalysis" class="analysis-list">
+
+            </div>
+
+        </section>
+
+
+        <!-- DATE-WISE ANALYSIS -->
+
+        <section class="card">
+
+            <div class="section-title">
+
+                <div>
+
+                    <h2>
+                        📅 Date-wise Spending
+                    </h2>
+
+                    <p>
+                        See how much you spent each day
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div id="dateWiseAnalysis" class="date-wise-list">
+
+                <div class="empty-state">
+                    No expenses found.
+                </div>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+    <div id="toast" class="toast">
+    </div>
+
+
+    <script src="script.js"></script>
+
+
+</body>
+
+</html>
