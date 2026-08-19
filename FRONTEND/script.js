@@ -2,8 +2,7 @@
 // API
 // =====================================================
 
-const API = "/api";
-
+const API = "https://YOUR-RENDER-BACKEND-URL.onrender.com/api";
 
 // =====================================================
 // DOM
