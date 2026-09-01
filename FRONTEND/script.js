@@ -902,37 +902,143 @@ function renderCategoryAnalysis(
 // DATE-WISE ANALYSIS
 // =====================================================
 
+```javascript
 async function loadDateWiseAnalysis() {
+    const container = document.getElementById("dateWiseAnalysis");
 
     try {
-
-        const year =
-            analysisDate.getFullYear();
-
-
-        const month =
-            analysisDate.getMonth() + 1;
-
-
-        const data =
-            await apiRequest(
-                `/expenses/date-wise?year=${year}&month=${month}`
-            );
-
-
-        renderDateWiseAnalysis(
-            data.dateWise
+        const data = await apiRequest(
+            `/expenses/date-wise?year=${currentMonth.year}&month=${currentMonth.month}`
         );
+
+        if (!data || data.length === 0) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    No expenses found for this month.
+                </div>
+            `;
+            return;
+        }
+
+        container.innerHTML = data.map((item, index) => {
+
+            const date = new Date(item.date + "T00:00:00");
+
+            const formattedDate = date.toLocaleDateString("en-IN", {
+                day: "2-digit",
+                month: "short",
+                year: "numeric"
+            });
+
+            const weekday = date.toLocaleDateString("en-IN", {
+                weekday: "long"
+            });
+
+            const expenseDetails = (item.expenses || [])
+                .map(expense => {
+
+                    const icon = categoryIcons[expense.category] || "📦";
+
+                    return `
+                        <div class="date-expense-item">
+
+                            <div class="date-expense-left">
+
+                                <div class="date-expense-icon">
+                                    ${icon}
+                                </div>
+
+                                <div>
+                                    <strong>
+                                        ${expense.category}
+                                    </strong>
+
+                                    ${
+                                        expense.note
+                                            ? `<div class="date-expense-note">
+                                                ${expense.note}
+                                               </div>`
+                                            : ""
+                                    }
+                                </div>
+
+                            </div>
+
+                            <div class="date-expense-amount">
+                                ₹${expense.amount}
+                            </div>
+
+                        </div>
+                    `;
+                })
+                .join("");
+
+            return `
+                <div class="date-wise-card">
+
+                    <!-- CLICKABLE DATE -->
+                    <button
+                        class="date-wise-row"
+                        onclick="toggleDateDetails(${index})"
+                    >
+
+                        <div class="date-wise-date">
+
+                            <strong>
+                                ${formattedDate}
+                            </strong>
+
+                            <span>
+                                ${weekday}
+                            </span>
+
+                        </div>
+
+                        <div class="date-wise-right">
+
+                            <span class="date-wise-amount">
+                                ₹${item.total}
+                            </span>
+
+                            <span
+                                id="date-arrow-${index}"
+                                class="date-arrow"
+                            >
+                                ▼
+                            </span>
+
+                        </div>
+
+                    </button>
+
+                    <!-- DETAILS -->
+                    <div
+                        id="date-details-${index}"
+                        class="date-expense-details"
+                        style="display: none;"
+                    >
+                        ${expenseDetails}
+                    </div>
+
+                </div>
+            `;
+        }).join("");
 
     } catch (error) {
 
-        showToast(
-            error.message
+        console.error(
+            "Date-wise analysis error:",
+            error
         );
 
+        container.innerHTML = `
+            <div class="empty-state">
+                Unable to load date-wise expenses.
+            </div>
+        `;
     }
-
 }
+```
 
 
 // =====================================================
